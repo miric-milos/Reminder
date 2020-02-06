@@ -39,15 +39,26 @@
         <form action="/akcija/dodaj" method="post">
             <div class="form-group">
                 <label for="tekst">Tekst stavke</label>
-                <textarea name="tekst" id="tekst" cols="5"></textarea>
+                <textarea class="form-control" name="tekst" id="tekst" cols="7"></textarea>
             </div>
         </form>
+        <button class="btn btn-outline-primary w-100" id="btnSacuvaj">Dodaj novu stavku</button>
     </div>
     <div class="col-md-3"></div>
 </div>
 
 </div>
 
+
+<script>
+    $(document).ready(() =>{
+        $("#btnSacuvaj").click(() => {
+            if($("#tekst").val() == "") return;
+
+            $("form").submit();
+        })
+    })
+</script>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

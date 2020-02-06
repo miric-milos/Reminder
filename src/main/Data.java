@@ -37,4 +37,19 @@ class Data {
             return false;
         }
     }
+
+    public static int dodeliNovId(ArrayList<Stavka> stavke) {
+
+        if(stavke.isEmpty()) {
+            return  0;
+        }
+
+        int max = stavke.get(0).getId();
+        for(int i = 1; i< stavke.size();++i) {
+            if(stavke.get(i).getId() > max) {
+                max = stavke.get(i).getId();
+            }
+        }
+        return ++max;
+    }
 }
