@@ -55,9 +55,7 @@
                                     <td>{{this.tekst}}</td>
                                     <td>{{this.datum}}</td>
                                     <td>
-                                        <button class="btn btn-outline-primary"
-                                                onclick="izmeni({{this.id}}, '{{this.tekst}}')">Izmeni
-                                        </button>
+                                        <button class="btn btn-outline-primary" onclick="izmeni({{this.id}}, '{{this.tekst}}')">Izmeni</button>
                                     </td>
                                 </tr>
                             {{/each}}
@@ -97,7 +95,7 @@
     $(document).ready(() => {
 
         $("#sort").change(() => {
-            if(("#sort").val() == "null")return;
+            if($("#sort").val() == "null")return;
 
             $.ajax({
                 url:"/akcija/sortiraj",
@@ -105,11 +103,29 @@
                 data:{"kriterijum":$("#sort").val()},
                 error: error => {console.log(error.statusMessage);},
                 success: data => {
-                    console.log(JSON.parse(data))
+                    //console.log(JSON.parse(data));
+                    prikazi(JSON.parse(data));
                 }
-            })
+            });
         });
     });
+
+    function prikazi(lista) {
+        if(lista.length == 0) return;
+        let prikaz = "";
+        for(let stv of lista) {
+            prikaz += `<tr class="text-center">
+                            <td>${stv.tekst}</td>
+                            <td>${stv.datum}</td>
+                            <td>
+                            <button class="btn btn-outline-primary" onclick="izmeni(${stv.id}, '${stv.tekst}')">
+                                Izmeni
+                            </button>
+                            </td>
+                       </tr>`;
+        }
+        $("#prikaz").html(prikaz);
+    }
 </script>
 
 <!-- Optional JavaScript -->

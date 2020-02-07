@@ -1,5 +1,6 @@
 package main;
 
+import com.google.gson.Gson;
 import model.Stavka;
 import spark.ModelAndView;
 import spark.template.handlebars.HandlebarsTemplateEngine;
@@ -52,8 +53,8 @@ public class Launcher {
             String tekst = request.queryParams("tekst");
             String datum = new SimpleDateFormat("dd/MM/yy HH:mm:ss").format(new Date());
             ArrayList<Stavka> sveStavke = Data.readFromJson(putanja);
-            for(Stavka s : sveStavke) {
-                if(s.getId() == id) {
+            for (Stavka s : sveStavke) {
+                if (s.getId() == id) {
                     s.setId(Data.dodeliNovId(sveStavke));
                     s.setDatum(datum);
                     s.setTekst(tekst);
@@ -65,10 +66,28 @@ public class Launcher {
 
         post("/akcija/sortiraj", (request, response) -> {
             String kriterijum = request.queryParams("kriterijum");
-            ArrayList<Stavka> sveStavke = Data.readFromJson(putanja);
+            ArrayList<Stavka> s = Data.readFromJson(putanja);
 
+            for (int i = 0; i < s.size() - 1; ++i) {
+                for (int j = i + 1; j < s.size(); ++j) {
+                    if(kriterijum.equalsIgnoreCase("asc")) {
+                        if(s.get(i).getId() > s.get(j).getId()) {
+                            Stavka tmp = s.get(i);
+                            s.set(i, s.get(j));
+                            s.set(j, tmp);
+                        }
+                    } else {
+                        if(s.get(i).getId() < s.get(j).getId()) {
+                            Stavka tmp = s.get(i);
+                            s.set(i, s.get(j));
+                            s.set(j, tmp);
+                        }
+                    }
+                }
+            }
 
-        })
+            return new Gson().toJson(s);
+        });
     }
 
 }
