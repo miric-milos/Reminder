@@ -30,6 +30,10 @@ public class Launcher {
             return new ModelAndView(null, "dodavanje.hbs");
         }, new HandlebarsTemplateEngine());
 
+        get("/strana/izmeni", (request, response) -> {
+            return new ModelAndView(null, "izmeni.hbs");
+        }, new HandlebarsTemplateEngine());
+
         post("/akcija/dodaj", (request, response) -> {
             String tekst = request.queryParams("tekst");
             ArrayList<Stavka> sveStavke = Data.readFromJson(putanja);
@@ -42,6 +46,23 @@ public class Launcher {
             Data.writeToJson(sveStavke, putanja);
             return new ModelAndView(null, "dodavanje.hbs");
         }, new HandlebarsTemplateEngine());
+
+        post("/akcija/izmeni", (request, response) -> {
+            int id = Integer.parseInt(request.queryParams("id"));
+            String tekst = request.queryParams("tekst");
+            String datum = new SimpleDateFormat("dd/MM/yy HH:mm:ss").format(new Date());
+            ArrayList<Stavka> sveStavke = Data.readFromJson(putanja);
+
+            for(Stavka s : sveStavke) {
+                if(s.getId() == id) {
+                    s.setId(Data.dodeliNovId(sveStavke));
+                    s.setDatum(datum);
+                    s.setTekst(tekst);
+                }
+            }
+            Data.writeToJson(sveStavke, putanja);
+            return "uspeh";
+        });
     }
 
 }
