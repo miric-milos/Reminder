@@ -52,7 +52,6 @@ public class Launcher {
             String tekst = request.queryParams("tekst");
             String datum = new SimpleDateFormat("dd/MM/yy HH:mm:ss").format(new Date());
             ArrayList<Stavka> sveStavke = Data.readFromJson(putanja);
-
             for(Stavka s : sveStavke) {
                 if(s.getId() == id) {
                     s.setId(Data.dodeliNovId(sveStavke));
@@ -63,6 +62,13 @@ public class Launcher {
             Data.writeToJson(sveStavke, putanja);
             return "uspeh";
         });
+
+        post("/akcija/sortiraj", (request, response) -> {
+            String kriterijum = request.queryParams("kriterijum");
+            ArrayList<Stavka> sveStavke = Data.readFromJson(putanja);
+
+
+        })
     }
 
 }

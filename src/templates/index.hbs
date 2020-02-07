@@ -72,7 +72,20 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark">
+                    <h5 class="card-title my-2 text-white">Sortiraj</h5>
+                </div>
+                <div class="card-body">
+                    <select name="sort" id="sort" class="form-control">
+                        <option value="null">-- Odaberi kriterijum --</option>
+                        <option value="desc">Novije</option>
+                        <option value="asc">Starije</option>
+                    </select>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -80,6 +93,23 @@
     function izmeni(id, tekst) {
         window.location.href = "/strana/izmeni?id="+id+"&tekst="+tekst;
     }
+
+    $(document).ready(() => {
+
+        $("#sort").change(() => {
+            if(("#sort").val() == "null")return;
+
+            $.ajax({
+                url:"/akcija/sortiraj",
+                method:"POST",
+                data:{"kriterijum":$("#sort").val()},
+                error: error => {console.log(error.statusMessage);},
+                success: data => {
+                    console.log(JSON.parse(data))
+                }
+            })
+        });
+    });
 </script>
 
 <!-- Optional JavaScript -->
